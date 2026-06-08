@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "node index.js"
+restartPolicyType = "never"
+
+[[services]]
+type = "cron"
+schedule = "0 9 * * *"
