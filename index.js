@@ -174,7 +174,7 @@ function buildAsanaComment(date, stuckCases, results) {
     .sort((a, b) => b.count - a.count)
     .map(
       (c) =>
-        `<li>CompanyId <strong>${c.company_id}</strong>: ${c.count} stuck CN(s) across ${c.invoices.size} invoice(s)</li>`
+        `<li>CompanyId <strong>${c.company_id}</strong>: ${c.count} stuck CN(s) across ${c.invoices.size} invoice(s) — Invoice IDs: <strong>${[...c.invoices].join(', ')}</strong></li>`
     )
     .join("");
 
