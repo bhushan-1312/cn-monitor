@@ -161,6 +161,14 @@ function buildAsanaComment(date, stuckCases, results) {
   const successCount = results.filter((r) => r.success).length;
   const failCount = results.filter((r) => !r.success).length;
 
+  // Lookup invoice_id -> invoice_number for labelling
+  const invoiceNumberById = {};
+  for (const row of stuckCases) {
+    invoiceNumberById[row.invoice_id] = row.invoice_number;
+  }
+  const labelInvoice = (id) =>
+    invoiceNumberById[id] ? `${id} (${invoiceNumberById[id]})` : `${id}`;
+
   // Group by company for summary table
   const byCompany = {};
   for (const row of stuckCases) {
@@ -174,7 +182,7 @@ function buildAsanaComment(date, stuckCases, results) {
     .sort((a, b) => b.count - a.count)
     .map(
       (c) =>
-        `<li>CompanyId <strong>${c.company_id}</strong>: ${c.count} stuck CN(s) across ${c.invoices.size} invoice(s) — Invoice IDs: <strong>${[...c.invoices].join(', ')}</strong></li>`
+        `<li>CompanyId <strong>${c.company_id}</strong>: ${c.count} stuck CN(s) across ${c.invoices.size} invoice(s) — Invoices (Id (No.)): <strong>${[...c.invoices].map(labelInvoice).join(', ')}</strong></li>`
     )
     .join("");
 
@@ -182,7 +190,7 @@ function buildAsanaComment(date, stuckCases, results) {
     .filter((r) => !r.success)
     .map(
       (r) =>
-        `<li>InvoiceId <strong>${r.invoiceId}</strong>: ${r.error || JSON.stringify(r.body)}</li>`
+        `<li>Invoice <strong>${labelInvoice(r.invoiceId)}</strong>: ${r.error || JSON.stringify(r.body)}</li>`
     )
     .join("");
 
