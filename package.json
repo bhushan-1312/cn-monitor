@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dry-run": "DRY_RUN=true node index.js"
+    "dry-run": "cross-env DRY_RUN=true node index.js",
+    "backfill": "node backfill.js",
+    "backfill:dry-run": "cross-env DRY_RUN=true node backfill.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -13,5 +15,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
   }
 }
